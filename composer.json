@@ -17,7 +17,7 @@
 
     "autoload": {
         "psr-4": {
-            "Inmanturbo\\FieldMapper\\": "src/"
+            "Inmanturbo\\ImportFieldMapper\\": "src/"
         }
     },
     "extra": {
