@@ -2,6 +2,11 @@
 
 Component to allow user to map fields for csv imports
 
+## Tailwind Purge
+```
+'./vendor/inmanturbo/volt-csv-import-field-mapper/resources/views/**/*.blade.php',
+```
+
 ## Usage
 
 ```php
