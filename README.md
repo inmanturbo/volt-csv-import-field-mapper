@@ -29,7 +29,7 @@ $importCsv = function () {
 
     $reader->getRows()->each(function ($row) {
         $row = collect($row)->mapWithKeys(function ($value, $key) {
-            // !important mappedImportField keys will come back lower and snaked
+            // !important mappedImportField keys will come back lower and snake case
             return [(string) str()->of($key)->lower()->snake() => $value];
         })->toArray();
 
@@ -48,7 +48,7 @@ $importCsv = function () {
         $contact->save();
     });
 
-    $this->uploadedCsvPath = null;
+    $this->uploadedCsvFile = null;
     $this->uploadDialog = false;
     $this->banner($reader->getRows()->count() . ' Contacts imported successfully');
 };

@@ -32,6 +32,9 @@ mount(function (array $importFieldMap = [], bool $shouldCleanupStorage = true) {
 });
 
 $updatedUploadedCsv = function () {
+
+	$this->validate(['uploadedCsv' => 'required|file|mimes:csv,txt|max:' . $this->maxFilesize]);
+
     if(count($this->importFields) > 0) {
 		foreach($this->importFields as $field) {
 			if(in_array($field, array_keys($this->importFieldMap))) {
@@ -116,7 +119,7 @@ $importFields = computed(function () {
         <x-field-mapper::label for="name" value="{{ __('Upload Csv') }}" />
         <x-field-mapper::input id="name" type="file" class="block w-full mt-1" wire:model.defer="uploadedCsv" />
 
-        <x-field-mapper::input-error for="uploaded_csv" class="mt-2" />
+        <x-field-mapper::input-error for="uploadedCsv" class="mt-2" />
 
         <x-field-mapper::label for="mapper" class="mt-1" value="{{ __('Map Fields') }}" />
 
