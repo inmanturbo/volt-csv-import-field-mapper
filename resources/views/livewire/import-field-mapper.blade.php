@@ -17,11 +17,11 @@ state(['shouldCleanupStorage' => true]);
 
 state(['storageDisk' => 'local']);
 
-state(['storagePath' => fn () => config('field-mapper.path')]);
+state(['storagePath' => fn () => config('import-field-mapper.path')]);
 
-state(['maxFiles' => config('field-mapper.max_files')]);
+state(['maxFiles' => config('import-field-mapper.max_files')]);
 
-state(['maxFilesize' => config('field-mapper.max_filesize')]);
+state(['maxFileSize' => config('import-field-mapper.max_file_size')]);
 
 state(['fileName' => null]);
 
@@ -33,7 +33,7 @@ mount(function (array $importFieldMap = [], bool $shouldCleanupStorage = true) {
 
 $updatedUploadedCsv = function () {
 
-	$this->validate(['uploadedCsv' => 'required|file|mimes:csv,txt|max:' . $this->maxFilesize]);
+	$this->validate(['uploadedCsv' => 'required|file|mimes:csv,txt|max:' . $this->maxFileSize]);
 
     if(count($this->importFields) > 0) {
 		foreach($this->importFields as $field) {
@@ -45,8 +45,8 @@ $updatedUploadedCsv = function () {
 		}
 	}
 
-	$this->dispatch('import-fields-mapper-updated-uploaded-file', $this->fileName);
-	$this->dispatch('import-fields-mapper-updated-mapped-import-fields', $this->mappedImportFields);
+	$this->dispatch('import-field-mapper-updated-uploaded-file', $this->fileName);
+	$this->dispatch('import-field-mapper-updated-mapped-import-fields', $this->mappedImportFields);
 };
 
 $updatedMappedImportFields = function () {

@@ -5,6 +5,7 @@ Component to allow user to map fields for csv imports
 ## Usage
 
 ```php
+use Illuminate\Support\Facades\Storage;
 use Spatie\SimpleExcel\SimpleExcelReader;
 
 use function Livewire\Volt\{on, state};
@@ -18,14 +19,13 @@ state([
 ]);
 
 on([
-    'import-fields-mapper-updated-uploaded-file' => fn($uploadedCsvFile) => $this->uploadedCsvFile = $uploadedCsvFile,
-    'import-mapper-updated-mapped-import-fields' => fn($mappedImportFields) => $this->mappedImportFields = $mappedImportFields,
+    'import-field-mapper-updated-uploaded-file' => fn($uploadedCsvFile) => $this->uploadedCsvFile = $uploadedCsvFile,
+    'import-field-mapper-updated-mapped-import-fields' => fn($mappedImportFields) => $this->mappedImportFields = $mappedImportFields,
 ]);
 
 
 $importCsv = function () {
-
-    $reader = SimpleExcelReader::create(storage_path(config('import-field-mapper'). '/' . $this->uploadedCsvFile));
+   $reader = SimpleExcelReader::create(Storage::path(config('import-field-mapper.path'). '/' . $this->uploadedCsvFile));
 
     $reader->getRows()->each(function ($row) {
         $row = collect($row)->mapWithKeys(function ($value, $key) {

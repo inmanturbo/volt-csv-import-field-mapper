@@ -13,7 +13,7 @@ class ImportFieldMapperServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/field-mapper.php', 'field-mapper');
+        $this->mergeConfigFrom(__DIR__.'/../config/import-field-mapper.php', 'import-field-mapper');
     }
 
     /**
