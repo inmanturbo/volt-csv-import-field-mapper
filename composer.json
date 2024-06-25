@@ -1,0 +1,39 @@
+{
+    "name": "inmanturbo/volt-csv-import-field-mapper",
+    "description": "Component to allow user to map fields for csv imports",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "inmanturbo"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "livewire/volt": "^1.6",
+        "spatie/simple-excel": "^3.6"
+    },
+
+    "autoload": {
+        "psr-4": {
+            "Inmanturbo\\FieldMapper\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Inmanturbo\\ImportFieldMapper\\ImportFieldMapperServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true
+        }
+    }
+}
