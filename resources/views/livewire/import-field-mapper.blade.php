@@ -29,6 +29,10 @@ mount(function (array $importFieldMap = [], bool $shouldCleanupStorage = true) {
 	$this->importFieldMap = $importFieldMap;
 	$this->importFields = $importFieldMap;
 	$this->shouldCleanupStorage = $shouldCleanupStorage;
+
+	if($this->shouldCleanupStorage) {
+	    $this->cleanupStorage($this->maxFiles);
+	}
 });
 
 $updatedUploadedCsv = function () {
@@ -71,10 +75,6 @@ $importFields = computed(function () {
 	if ($this->uploadedCsv) {
 		if (! Storage::disk($this->storageDisk)->exists($this->storagePath)) {
 			Storage::disk($this->storageDisk)->makeDirectory($this->storagePath);
-		}
-
-		if($this->shouldCleanupStorage) {
-			$this->cleanupStorage($this->maxFiles);
 		}
 
 		$ulid = (string) str()->ulid();
