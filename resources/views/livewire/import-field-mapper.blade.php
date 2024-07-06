@@ -115,7 +115,7 @@ $importFields = computed(function () {
 ?>
 
 <div class="grid grid-cols-6 gap-6">
-    <div class="col-span-6 sm:col-span-2">
+    <div class="col-span-6">
         <x-field-mapper::label for="name" value="{{ __('Upload Csv') }}" />
         <x-field-mapper::input id="name" type="file" class="block w-full mt-1" wire:model.defer="uploadedCsv" />
 
