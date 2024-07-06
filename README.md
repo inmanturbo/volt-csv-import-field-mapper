@@ -70,7 +70,7 @@ $importCsv = function () {
         </x-slot>
 
         <x-slot name="content">
-            @livewire('contacts.field-mapper', ['importFieldMap' => $this->importMap,])
+            @livewire('import-field-mapper', ['importFieldMap' => $this->importMap,])
         </x-slot>
         
         <x-slot name="footer">
