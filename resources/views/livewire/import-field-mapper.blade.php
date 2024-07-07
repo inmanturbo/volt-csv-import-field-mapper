@@ -39,7 +39,7 @@ $updatedUploadedCsv = function () {
 
 	$this->validate(['uploadedCsv' => 'required|file|mimes:csv,txt|max:' . $this->maxFileSize]);
 
-    if(count($this->importFields) > 0) {
+	if(count($this->importFields) > 0) {
 		foreach($this->importFields as $field) {
 			if(in_array($field, array_keys($this->importFieldMap))) {
 				$this->mappedImportFields[$field] = $field;
@@ -130,9 +130,11 @@ $importFields = computed(function () {
                 <x-field-mapper::select class="block w-full mt-1" :disabled="is_null($this->uploadedCsv)" wire:model.live="mappedImportFields.{{ $key }}">
                     <option></option>
                     @foreach($this->importFields as $fk => $field)
-                        <option value="{{ $fk }}">{{ $field }}</option>
+			@if($field)
+				<option value="{{ $fk }}">{{ $field }}</option>
+			@endif
                     @endforeach
-				</x-field-mapper::select>
+		</x-field-mapper::select>
             @endforeach
         </div>
     </div>
