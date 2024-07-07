@@ -8,7 +8,7 @@ class Row implements Arrayable
 {
     public function __construct(public array $row)
     {
-        $this->row = collect($row)->mapWithKeys(fn($value, $key) => [(string) str()->of($key)->lower()->snake() => $key])->toArray();
+        $this->row = collect($row)->mapWithKeys(fn($value, $key) => [(string) str()->of($key)->lower()->snake() => $value])->toArray();
     }
 
     public function value(string $key): mixed
