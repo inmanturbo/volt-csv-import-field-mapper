@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Storage;
+use Inmanturbo\ImportFieldMapper\ImportFieldMapper;
 use Spatie\SimpleExcel\SimpleExcelReader;
 
 use function Livewire\Volt\{computed, mount, protect, state, usesFileUploads};
@@ -90,9 +91,7 @@ $importFields = computed(function () {
 
 		$firstRow = $csv[0];
 
-		$keys = collect($firstRow)->mapWithKeys(function ($value, $key) {
-			return [(string) str()->of($key)->lower()->snake() => $key];
-		})->toArray();
+		$keys = ImportFieldMapper::row($firstRow)->toArray();
 		
 		$sorted = array_merge(array_flip(array_keys($this->importFieldMap)), $keys);
 

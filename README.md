@@ -12,6 +12,8 @@ Component to allow user to map fields for csv imports
 ```php
 use Illuminate\Support\Facades\Storage;
 use Spatie\SimpleExcel\SimpleExcelReader;
+use Inmanturbo\ImportFieldMapper\ImportFieldMapper;
+use App\Models\Contact;
 
 use function Livewire\Volt\{on, state};
 
@@ -33,20 +35,17 @@ $importCsv = function () {
    $reader = SimpleExcelReader::create(Storage::path(config('import-field-mapper.path'). '/' . $this->uploadedCsvFile));
 
     $reader->getRows()->each(function ($row) {
-        $row = collect($row)->mapWithKeys(function ($value, $key) {
-            // !important mappedImportField keys will come back lower and snake case
-            return [(string) str()->of($key)->lower()->snake() => $value];
-        })->toArray();
+        $row = ImportFieldMapper::row($row);
 
         $contact = new Contact;
 
         // map fields from mappedImportFields
         foreach ($this->mappedImportFields as $key => $value) {
-            // only save if value is not empty
-            if (isset($row[$value]) && $row[$value] != '') {
-                $contact->$key = $row[$value];
-            }elseif(isset($row[$this->importMap[$key]]) && $row[$this->importMap[$key]] != '') {
-                $contact->$key = $row[$this->importMap[$key]];
+  
+            if ($row->isMappableValue($row[$value])) {
+                $contact->$key = $row->value($value);
+            }elseif($row->isMappableValue($this->importMap[$key])) {
+                $contact->$key = $row->value($this->importMap[$key]);
             }
         }
 
