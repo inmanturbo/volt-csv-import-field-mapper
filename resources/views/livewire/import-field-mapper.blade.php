@@ -91,7 +91,8 @@ $importFields = computed(function () {
 
 		$firstRow = $csv[0];
 
-		$keys = ImportFieldMapper::row($firstRow)->toArray();
+		$keys = collect(ImportFieldMapper::row($firstRow)->toArray())
+			->mapWithKeys(fn($value, $key) => [$key => $key])->toArray();
 		
 		$sorted = array_merge(array_flip(array_keys($this->importFieldMap)), $keys);
 
