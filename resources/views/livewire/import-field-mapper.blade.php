@@ -110,7 +110,7 @@ $importFields = computed(function () {
 		return $sorted;
 	}
 
-    return $this->importFieldMap;
+	return $this->importFieldMap;
 });
 ?>
 
