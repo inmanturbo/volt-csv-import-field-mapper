@@ -116,13 +116,11 @@ $importFields = computed(function () {
 
 <div class="grid grid-cols-6 gap-6">
     <div class="col-span-6">
-        <x-field-mapper::label for="name" value="{{ __('Upload Csv') }}" />
-        <x-field-mapper::input id="name" type="file" class="block w-full mt-1" wire:model.defer="uploadedCsv" />
-
+        <x-field-mapper::label for="uploadedCsv" value="{{ __('Upload Csv') }}" />
+        <x-field-mapper::input id="uploadedCsv" type="file" class="block w-full mt-1" wire:model.defer="uploadedCsv" autofocus />
         <x-field-mapper::input-error for="uploadedCsv" class="mt-2" />
-
+		
         <x-field-mapper::label for="mapper" class="mt-1" value="{{ __('Map Fields') }}" />
-
         <div class="grid grid-cols-2 gap-2 mt-1">
             <!-- field mapper -->
             @foreach($importFieldMap as $key => $mappableField)
