@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Storage;
-use Inmanturbo\ImportFieldMapper\ImportFieldMapper;
 use Spatie\SimpleExcel\SimpleExcelReader;
 
 use function Livewire\Volt\{computed, mount, protect, state, usesFileUploads};
@@ -36,8 +35,7 @@ mount(function (array $importFieldMap = [], bool $shouldCleanupStorage = true) {
 	}
 });
 
-$updatedUploadedCsv = function () {
-
+$main = protect(function () {
 	$this->validate(['uploadedCsv' => 'required|file|mimes:csv,txt|max:' . $this->maxFileSize]);
 
 	if(count($this->importFields) > 0) {
@@ -52,10 +50,14 @@ $updatedUploadedCsv = function () {
 
 	$this->dispatch('import-field-mapper-updated-uploaded-file', $this->fileName);
 	$this->dispatch('import-field-mapper-updated-mapped-import-fields', $this->mappedImportFields);
+});
+
+$updatedUploadedCsv = function () {
+	$this->main();
 };
 
 $updatedMappedImportFields = function () {
-	$this->dispatch('import-mapper-updated-mapped-import-fields', $this->mappedImportFields);
+	$this->main();
 };
 
 $cleanupStorage = protect(function () {
