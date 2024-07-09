@@ -2,6 +2,7 @@
 
 namespace Inmanturbo\ImportFieldMapper;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Schema;
 
 trait HandlesMappedEloquentAttributes
@@ -42,9 +43,11 @@ trait HandlesMappedEloquentAttributes
          return array_merge(['id', 'uuid'], [$this->modelKey()]);
      }
 
-     protected function newModel(): mixed
+     protected function newModel(): Model
      {
-         return new $this->modelClass();
+        $modelClass = $this->modelClass();
+
+        return new $modelClass;
      }
 
      protected function modelKey(): string
