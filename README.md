@@ -32,24 +32,22 @@ on([
 
 
 $importCsv = function () {
-   $reader = SimpleExcelReader::create(Storage::path(config('import-field-mapper.path'). '/' . $this->uploadedCsvFile));
+   $path = Storage::path(config('import-field-mapper.path'). '/' . $this->uploadedCsvFile);
+   $reader = SimpleExcelReader::create($path);
 
     $reader->getRows()->each(function ($row) {
-        $row = ImportFieldMapper::row($row);
+        $row = ImportFieldMapper::row($row)->toArray();
 
-        $contact = new Contact;
+        $action = new class($row, $this->importMap, $this->mappedImportFields) {
+            use \Inmanturbo\ImportFieldMapper\HandlesMappedEloquentAttributes;
 
-        // map fields from mappedImportFields
-        foreach ($this->mappedImportFields as $key => $value) {
-  
-            if ($row->isMappableValue($row[$value])) {
-                $contact->$key = $row->value($value);
-            }elseif($row->isMappableValue($this->importMap[$key])) {
-                $contact->$key = $row->value($this->importMap[$key]);
+            protected modelClass()
+            {
+                return \App\Models\Contact::class;
             }
         }
 
-        $contact->save();
+        $action->handle();
     });
 
     $this->uploadedCsvFile = null;
