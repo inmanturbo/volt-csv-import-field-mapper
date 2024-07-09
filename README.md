@@ -18,11 +18,11 @@ use App\Models\Contact;
 use function Livewire\Volt\{on, state};
 
 state([
-    'importMap' => [
-        'display_name' => 'Display Name',
-        'email' => 'Email',
-    ],
-    'uploadDialog' => false,
+	'importMap' => [
+		'display_name' => 'Display Name',
+		'email' => 'Email',
+	],
+		'uploadDialog' => false,
 ]);
 
 on([
