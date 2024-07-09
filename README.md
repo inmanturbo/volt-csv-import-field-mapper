@@ -34,8 +34,8 @@ on([
 				. $uploadedCsvPath
 			),
 	'import-field-mapper-updated-mapped-import-fields' =>
-		fn($mappedImportFields)
-			=> $this->mappedImportFields = $mappedImportFields,
+		fn($mappedImportFields) =>
+			$this->mappedImportFields = $mappedImportFields,
 ]);
 
 
