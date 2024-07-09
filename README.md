@@ -26,8 +26,11 @@ state([
 ]);
 
 on([
-    'import-field-mapper-updated-uploaded-file' => fn($uploadedCsvFile) => $this->uploadedCsvFile = $uploadedCsvFile,
-    'import-field-mapper-updated-mapped-import-fields' => fn($mappedImportFields) => $this->mappedImportFields = $mappedImportFields,
+	'import-field-mapper-updated-uploaded-file' =>
+        fn($uploadedCsvPath) =>
+        $this->uploadedCsvPath = Storage::path(config('import-field-mapper.path') . DIRECTORY_SEPARATOR . $uploadedCsvPath),
+	'import-field-mapper-updated-mapped-import-fields' =>
+        fn($mappedImportFields) => $this->mappedImportFields = $mappedImportFields,
 ]);
 
 
