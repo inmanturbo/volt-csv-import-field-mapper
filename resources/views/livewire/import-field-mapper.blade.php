@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Storage;
-use Inmanturbo\ImportFieldMapper\ImportFieldMapper;
 use Spatie\SimpleExcel\SimpleExcelReader;
 
 use function Livewire\Volt\{computed, mount, protect, state, usesFileUploads};
@@ -36,8 +35,7 @@ mount(function (array $importFieldMap = [], bool $shouldCleanupStorage = true) {
 	}
 });
 
-$updatedUploadedCsv = function () {
-
+$main = protect(function () {
 	$this->validate(['uploadedCsv' => 'required|file|mimes:csv,txt|max:' . $this->maxFileSize]);
 
 	if(count($this->importFields) > 0) {
@@ -52,10 +50,14 @@ $updatedUploadedCsv = function () {
 
 	$this->dispatch('import-field-mapper-updated-uploaded-file', $this->fileName);
 	$this->dispatch('import-field-mapper-updated-mapped-import-fields', $this->mappedImportFields);
+});
+
+$updatedUploadedCsv = function () {
+	$this->main();
 };
 
 $updatedMappedImportFields = function () {
-	$this->dispatch('import-mapper-updated-mapped-import-fields', $this->mappedImportFields);
+	$this->main();
 };
 
 $cleanupStorage = protect(function () {
@@ -91,7 +93,8 @@ $importFields = computed(function () {
 
 		$firstRow = $csv[0];
 
-		$keys = ImportFieldMapper::row($firstRow)->toArray();
+		$keys = collect($firstRow)
+			->mapWithKeys(fn ($value, $key) => [(string) str()->of($key)->lower()->snake() => $key])->toArray();
 		
 		$sorted = array_merge(array_flip(array_keys($this->importFieldMap)), $keys);
 
@@ -115,13 +118,11 @@ $importFields = computed(function () {
 
 <div class="grid grid-cols-6 gap-6">
     <div class="col-span-6">
-        <x-field-mapper::label for="name" value="{{ __('Upload Csv') }}" />
-        <x-field-mapper::input id="name" type="file" class="block w-full mt-1" wire:model.defer="uploadedCsv" />
-
+        <x-field-mapper::label for="uploadedCsv" value="{{ __('Upload Csv') }}" />
+        <input id="uploadedCsv" type="file" class="block w-full mt-1" wire:model.defer="uploadedCsv" autofocus />
         <x-field-mapper::input-error for="uploadedCsv" class="mt-2" />
-
+		
         <x-field-mapper::label for="mapper" class="mt-1" value="{{ __('Map Fields') }}" />
-
         <div class="grid grid-cols-2 gap-2 mt-1">
             <!-- field mapper -->
             @foreach($importFieldMap as $key => $mappableField)
